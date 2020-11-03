@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
     public float minSwipeDistance;
     public float Power;
     public float MaxSwipeLength;
+    public GameObject HitPrefab;
 
     private float swipeStartTime;
     private float swipeEndTime;
@@ -20,6 +21,7 @@ public class PlayerMove : MonoBehaviour
     bool swiping;
     float timer;
     Rigidbody2D rb;
+    public GameObject StopObject;
 
     void Start()
     {
@@ -50,6 +52,11 @@ public class PlayerMove : MonoBehaviour
                 swipeLength = (endSwipePostion - startSwipePosition).magnitude;
                 if(swipeTime<maxSwipeTime && swipeLength > minSwipeDistance)
                 {
+                    if (StopObject != null)
+                    {
+                        Destroy(StopObject);
+                    }
+                    StopObject = Instantiate(HitPrefab, Camera.main.ScreenToWorldPoint(endSwipePostion), Quaternion.identity);
                     MoveDirection(startSwipePosition, endSwipePostion);
                 }
             }
@@ -72,12 +79,23 @@ public class PlayerMove : MonoBehaviour
             rb.AddForce(dir * SwiperPower * Power);
             timer += Time.deltaTime;
         }
-        if (timer > 0.2f)
+
+        if (timer > 0.2)
         {
             rb.velocity = Vector3.zero;
-            UnityEngine.Debug.Log(rb.velocity);
             swiping = false;
             timer = 0f;
+            Destroy(StopObject);
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Hit"))
+        {
+            rb.velocity = Vector3.zero;
+            swiping = false;
+            timer = 0f;
+            Destroy(StopObject);
         }
     }
 }

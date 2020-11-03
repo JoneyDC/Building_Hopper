@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Tile
   - Obstacle
+  - Coin
+  - Hit
   layers:
   - Default
   - TransparentFX
