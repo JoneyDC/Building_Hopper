@@ -8,6 +8,7 @@ TagManager:
   - Obstacle
   - Coin
   - Hit
+  - GameOver
   layers:
   - Default
   - TransparentFX

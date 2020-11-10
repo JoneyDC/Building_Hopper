@@ -5,22 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
 {
-    // Start is called before the first frame update
+    GameObject GameOverScreen;
     void Start()
     {
-        
+        GameOverScreen = GameObject.FindGameObjectWithTag("GameOver").transform.GetChild(0).gameObject;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-           //SceneManager.LoadScene(0);
+            Time.timeScale = 0;
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<SpawnControl>().MovementSpeed = 0;
+            GameOverScreen.SetActive(true);
         }
     }
 }
