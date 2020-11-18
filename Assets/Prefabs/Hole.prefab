@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 8039401540372611396}
   - component: {fileID: 8039401540372611399}
   - component: {fileID: 8039401540372611393}
-  - component: {fileID: 8472532457507669941}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: Hole
-  m_TagString: Obstacle
+  m_TagString: Hole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,15 +108,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10, y: 10}
   m_EdgeRadius: 0
---- !u!114 &8472532457507669941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8039401540372611395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00832c082cd70074eb9a7ac68bf9481f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

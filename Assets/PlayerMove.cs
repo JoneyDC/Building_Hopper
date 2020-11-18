@@ -14,6 +14,7 @@ public class PlayerMove : MonoBehaviour
     private float swipeStartTime;
     private float swipeEndTime;
     private float swipeTime;
+    private float dist;
     private Vector2 startSwipePosition;
     private Vector2 endSwipePostion;
     Vector2 dir;
@@ -21,11 +22,15 @@ public class PlayerMove : MonoBehaviour
     bool swiping;
     float timer;
     Rigidbody2D rb;
-    public GameObject StopObject;
+    [HideInInspector] public GameObject StopObject;
+    Animator anim;
+    GameObject GameOverScreen;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        GameOverScreen = GameObject.FindGameObjectWithTag("GameOver").transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -33,39 +38,56 @@ public class PlayerMove : MonoBehaviour
     {
         SwipeTest();
         MovePlayer();
+        PlayerDirection();
+    }
+    void PlayerDirection()
+    {
+        if(transform.position.x >= 0)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
     }
     void SwipeTest()
     {
         if(Input.touchCount>0)
         {
             Touch touch = Input.GetTouch(0);
-            if(touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began)
             {
-                swipeStartTime = Time.time;
-                startSwipePosition = touch.position;
+                dist = Vector2.Distance(Camera.main.ScreenToWorldPoint(touch.position), transform.position);
             }
-            else if (touch.phase == TouchPhase.Ended)
+            if (dist < 2)
             {
-                swipeEndTime = Time.time;
-                endSwipePostion = touch.position;
-                swipeTime = swipeEndTime - swipeStartTime;
-                swipeLength = (endSwipePostion - startSwipePosition).magnitude;
-                if(swipeTime<maxSwipeTime && swipeLength > minSwipeDistance)
+                Debug.Log(dist);
+                if (touch.phase == TouchPhase.Began)
                 {
-                    if (StopObject != null)
+                    swipeStartTime = Time.time;
+                    startSwipePosition = touch.position;
+                }
+                else if (touch.phase == TouchPhase.Ended)
+                {
+                    swipeEndTime = Time.time;
+                    endSwipePostion = touch.position;
+                    swipeTime = swipeEndTime - swipeStartTime;
+                    swipeLength = (endSwipePostion - startSwipePosition).magnitude;
+                    if (swipeTime < maxSwipeTime && swipeLength > minSwipeDistance)
                     {
-                        Destroy(StopObject);
+                        MoveDirection(startSwipePosition, endSwipePostion);
                     }
-                    StopObject = Instantiate(HitPrefab, Camera.main.ScreenToWorldPoint(endSwipePostion), Quaternion.identity);
-                    MoveDirection(startSwipePosition, endSwipePostion);
                 }
             }
-        }
+            Debug.Log(dist);
+        } 
     }
     void MoveDirection(Vector2 StartPosition, Vector2 EndPosition)
     {
         dir = (EndPosition - StartPosition).normalized;
         swiping = true;
+        anim.SetBool("isDashing", true);
     }
     private void MovePlayer()
     {
@@ -79,11 +101,12 @@ public class PlayerMove : MonoBehaviour
             rb.AddForce(dir * SwiperPower * Power);
             timer += Time.deltaTime;
         }
-
-        if (timer > 0.2)
+        float distance = Vector2.Distance(Camera.main.ScreenToWorldPoint(endSwipePostion), transform.position);
+        if (timer > 0.2 || distance < 2)
         {
             rb.velocity = Vector3.zero;
             swiping = false;
+            anim.SetBool("isDashing", false);
             timer = 0f;
             Destroy(StopObject);
         }
@@ -94,8 +117,27 @@ public class PlayerMove : MonoBehaviour
         {
             rb.velocity = Vector3.zero;
             swiping = false;
+            anim.SetBool("isDashing", false);
             timer = 0f;
             Destroy(StopObject);
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Hole"))
+        {
+            if (!swiping)
+            {
+                Time.timeScale = 0;
+                GameObject.FindGameObjectWithTag("GameController").GetComponent<SpawnControl>().MovementSpeed = 0;
+                GameOverScreen.SetActive(true);
+            }
+        }
+        if (collision.gameObject.CompareTag("Police"))
+        {
+            Time.timeScale = 0;
+            GameObject.FindGameObjectWithTag("GameController").GetComponent<SpawnControl>().MovementSpeed = 0;
+            GameOverScreen.SetActive(true);
         }
     }
 }

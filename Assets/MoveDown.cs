@@ -7,7 +7,7 @@ public class MoveDown : MonoBehaviour
     public static float GameSpeed;
     void Start()
     {
-        GameSpeed = 0.01f;
+       
     }
 
     // Update is called once per frame

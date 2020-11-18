@@ -19,9 +19,10 @@ public class SpawnControl : MonoBehaviour
     {
         TileCount = 1;
         Stage = 1;
+        MovementSpeed = 7f;
+        Decelerator = 20f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         MovementSpeed += Time.deltaTime / Decelerator;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6020253534832066427}
   - component: {fileID: 6020253534832066420}
   - component: {fileID: 6874129718060329459}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ExperienceOrb
   m_TagString: Coin
   m_Icon: {fileID: 0}

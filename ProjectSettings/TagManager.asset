@@ -9,6 +9,9 @@ TagManager:
   - Coin
   - Hit
   - GameOver
+  - Hole
+  - CoinCollider
+  - Police
   layers:
   - Default
   - TransparentFX
@@ -22,9 +25,9 @@ TagManager:
   - Tile
   - Finish
   - Obstacle
-  - 
-  - 
-  - 
+  - Hole
+  - CoinCollider
+  - Coin
   - 
   - 
   - 
