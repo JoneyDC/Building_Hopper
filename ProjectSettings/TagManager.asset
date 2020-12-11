@@ -8,10 +8,12 @@ TagManager:
   - Obstacle
   - Coin
   - Hit
-  - GameOver
   - Hole
   - CoinCollider
   - Police
+  - EndPolice
+  - UI
+  - GameOver
   layers:
   - Default
   - TransparentFX

@@ -2507,7 +2507,7 @@ PrefabInstance:
     - target: {fileID: 4876835821422250267, guid: 6394749d9bb21fa49b0d0055b496eb46,
         type: 3}
       propertyPath: m_Name
-      value: PlainTile (1)
+      value: 2 Lines
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6394749d9bb21fa49b0d0055b496eb46, type: 3}
